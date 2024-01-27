@@ -6,31 +6,28 @@ const nodemailer = require('nodemailer')
 const args = process.argv.slice(2)
 const url = args[0]
 const idealPrice = args[1]
-EMAIL_ID = process.env.EMAIL_ID
-EMAIL_PASSWORD = process.env.EMAIL_PASSWORD
+const HOST = process.env.HOST
+const EMAIL_ID = process.env.EMAIL_ID
+const PASS = process.env.PASS
 
 var transporter = nodemailer.createTransport({
-  service: "gmail",
+  host: HOST,
+  port: 587,
   auth: {
     user: EMAIL_ID,
-    pass: EMAIL_PASSWORD,
+    pass: PASS,
   },
 });
 
-var mailOptions = {
-  from: EMAIL_ID,
-  to: "hackrgpv@gmail.com",
-  subject: "Sending Email using Node.js",
-  text: "That was easy!",
-};
+const sendEmail = async (sub, body) => {
+  await transporter.sendMail({
+    from: EMAIL_ID,
+    to: "hackrgpv@gmail.com",
+    subject: sub,
+    text: body
+  })
+} 
 
-transporter.sendMail(mailOptions, function (error, info) {
-  if (error) {
-    console.log(error);
-  } else {
-    console.log("Email sent: " + info.response);
-  }
-});
 
 priceChecker()
 async function priceChecker() {
@@ -40,8 +37,11 @@ async function priceChecker() {
                                     .evaluate(() => document.querySelector('.a-price-whole').innerText)
                                     .end()
         const amazonPriceInt = parseInt(amazonPrice.replace(',', ''))
-        amazonPriceInt <= idealPrice ? console.log(`Buy it ; Price dropped to ${amazonPriceInt}`) : console.log(`Don't but it ; Price is still ${amazonPriceInt}`) 
+        if (amazonPriceInt <= idealPrice) {  
+          await sendEmail('Buy it', `Price dropped to ${amazonPriceInt}`)
+          console.log('email sent')
+        } 
     } catch (error) {
-        console.log(error.message)
+        await sendEmail('PriceZilla internal error occured', error.message)
     }
 }
