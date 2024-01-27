@@ -13,8 +13,9 @@ async function priceChecker() {
                                     .wait('.a-price-whole')
                                     .evaluate(() => document.querySelector('.a-price-whole').innerText)
                                     .end()
-        amazonPrice >= idealPrice ? console.log('Buy it') : console.log('Wait for the price to drop')
+        const amazonPriceInt = parseInt(amazonPrice.replace(',', ''))
+        amazonPriceInt <= idealPrice ? console.log(`Buy it ; Price dropped to ${amazonPriceInt}`) : console.log(`Don't but it ; Price is still ${amazonPriceInt}`) 
     } catch (error) {
-        console.log(error)
+        console.log(error.message)
     }
 }
