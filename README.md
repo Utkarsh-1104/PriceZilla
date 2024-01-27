@@ -50,7 +50,7 @@ Replace `<amazon_product_url>`, `<desired_price>`, and `<your_email>` with the a
 Example:
 
 ```bash
-node pricezilla.js https://www.amazon.com/product12345 50.00 john.doe@example.com
+node pricezilla.js https://www.amazon.com/product12345 50 john.doe@example.com
 ```
 
 ## License
