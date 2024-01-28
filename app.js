@@ -1,4 +1,3 @@
-// const url = "https://www.amazon.in/ZEBRONICS-Zeb-Storm-Microphone-Adjustable-Lightweight/dp/B084BVXCBF/"
 require('dotenv').config()
 const nightmare = require('nightmare')
 const nodemailer = require('nodemailer')
@@ -28,7 +27,6 @@ const sendEmail = async (sub, body) => {
     text: body
   })
 } 
-
 
 priceChecker()
 async function priceChecker() {
